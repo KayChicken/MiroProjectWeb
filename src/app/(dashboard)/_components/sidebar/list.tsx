@@ -18,7 +18,7 @@ export const List = () => {
         <ul className="space-y-4">
             {userMemberships.data?.map((member) => (
                 <p key={member.organization.id}>
-                    <Item key={member.organization.id} id={member.organization.name} name={member.organization.name} imageUrl={member.organization.imageUrl}/>
+                    <Item key={member.organization.id} id={member.organization.id} name={member.organization.name} imageUrl={member.organization.imageUrl}/>
                 </p>
             ))}
         </ul>
