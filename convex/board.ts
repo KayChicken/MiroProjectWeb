@@ -1,5 +1,6 @@
 import { v } from 'convex/values'
 import { mutation } from './_generated/server'
+import { title } from 'process'
 
 
 const images = [
@@ -30,12 +31,12 @@ export const create = mutation({
 
         const randomImage = images[Math.floor(Math.random() * images.length)]
 
-        const board = await ctx.db.insert("boards" , {
-            title : args.title,
-            orgId : args.orgId,
-            authorId : identity.subject,
-            authorName : identity.name!,
-            imageUlr : randomImage
+        const board = await ctx.db.insert("boards", {
+            title: args.title,
+            orgId: args.orgId,
+            authorId: identity.subject,
+            authorName: identity.name!,
+            imageUlr: randomImage
         })
 
         return board
@@ -47,3 +48,33 @@ export const create = mutation({
 })
 
 
+
+export const remove = mutation({
+    args: { id: v.id("boards") },
+    handler: async (ctx, args) => {
+        const identity = await ctx.auth.getUserIdentity()
+
+        if (!identity) {
+            throw new Error("Unauthorized")
+        }
+
+
+        await ctx.db.delete(args.id)
+    }
+
+
+})
+
+
+
+export const rename = mutation({
+    args: { id: v.id("boards"), title: v.string() },
+    handler: async (ctx, args) => {
+        const { id } = args
+        const identity = await ctx.auth.getUserIdentity()
+        if (!identity) {
+            throw new Error("Unauthorized")
+        }
+        await ctx.db.patch(id, { title: title })
+    }
+})

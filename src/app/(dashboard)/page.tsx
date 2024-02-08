@@ -7,9 +7,9 @@ import BoardList from './_components/board-list';
 
 
 interface DashboardPageProps {
-    searchParams : {
-        search? : string,
-        favorites? : string
+    searchParams: {
+        search?: string,
+        favorites?: string
 
     }
 }
@@ -21,7 +21,7 @@ interface DashboardPageProps {
 
 
 
-const Dashboard = ({searchParams} : DashboardPageProps) => {
+const Dashboard = ({ searchParams }: DashboardPageProps) => {
 
     const { organization } = useOrganization()
 
@@ -34,7 +34,7 @@ const Dashboard = ({searchParams} : DashboardPageProps) => {
             {!organization ? (
                 <EmptyOrg />
             ) : (
-                <BoardList orgId={organization.id} query={searchParams}/>
+                <BoardList orgId={organization.id} query={searchParams} />
             )}
 
         </div>
