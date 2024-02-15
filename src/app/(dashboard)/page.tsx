@@ -22,7 +22,7 @@ interface DashboardPageProps {
 
 
 const Dashboard = ({ searchParams }: DashboardPageProps) => {
-
+    
     const { organization } = useOrganization()
 
 

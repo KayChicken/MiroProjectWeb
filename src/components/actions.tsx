@@ -15,6 +15,7 @@ import { Button } from "@/components/ui/button";
 import { api } from "../../convex/_generated/api";
 import { useApiMutation } from "../../hooks/use-api-mutation";
 import { ConfirmModal } from "./ui/confirm-modal";
+import { useRenameModal } from "../../store/user-rename-modal";
 
 interface ActionsProps {
     children: React.ReactNode;
@@ -34,6 +35,7 @@ export const Actions = ({
 
 
     const { mutate, pending } = useApiMutation(api.board.remove);
+    const {onOpen} = useRenameModal()
 
     const onCopyLink = () => {
         navigator.clipboard.writeText(
@@ -49,10 +51,7 @@ export const Actions = ({
             .catch(() => toast.error("Failed to delete board"));
     };
 
-
-    const onRename = () => {
-        
-    }
+   
 
     return (
         <DropdownMenu>
@@ -73,7 +72,7 @@ export const Actions = ({
                     Copy board link
                 </DropdownMenuItem>
                 <DropdownMenuItem
-                    onClick={() => { }}
+                    onClick={() => onOpen(id,title)}
                     className="p-3 cursor-pointer"
                 >
                     <Pencil className="h-4 w-4 mr-2" />

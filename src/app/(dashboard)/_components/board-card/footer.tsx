@@ -13,6 +13,15 @@ interface FooterProps {
 }
 
 const Footer = ({ title, authorLabel, createdAtLabel, isFavorite, onClick, disabled }: FooterProps) => {
+
+
+    const handleClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        e.stopPropagation()
+        e.preventDefault()
+
+        onClick()
+    }
+
     return (
         <div className="relative bg-white p-3">
             <p className="text-[1rem] font-bold truncate max-w-[calc(100%-20px)]">
@@ -21,8 +30,8 @@ const Footer = ({ title, authorLabel, createdAtLabel, isFavorite, onClick, disab
             <p>
                 {authorLabel} , {createdAtLabel}
             </p>
-            <button disabled={disabled} onClick={onClick} className={cn("group-hover:opacity-100 transition absolute top-4 right-3 text-muted-foreground hover:text-blue-600", disabled && "cursor-not-allowed opacity-75")}>
-                <Star className={cn("h-5 w-5" , isFavorite && "fill-blue-600 text-blue-600")}/>
+            <button disabled={disabled} onClick={handleClick} className={cn("group-hover:opacity-100 transition absolute top-4 right-3 text-muted-foreground hover:text-blue-600", disabled && "cursor-not-allowed opacity-75")}>
+                <Star className={cn("h-5 w-5", isFavorite && "fill-blue-600 text-blue-600")} />
             </button>
         </div>
     );
