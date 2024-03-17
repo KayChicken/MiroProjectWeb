@@ -5,7 +5,7 @@ import Loading from './_components/loading';
 
 interface BoardIdPageProps {
     params: {
-        boardId: string
+        boardid: string
     }
 }
 
@@ -15,8 +15,8 @@ const BoardIdPage = ({ params }: BoardIdPageProps) => {
 
     return (
         <div className='h-full w-full'>
-            <Room roomId={params.boardId} fallback={<Loading />}>
-                <Canvas boardId={params.boardId} />
+            <Room roomId={params.boardid} fallback={<Loading />}>
+                <Canvas boardid={params.boardid} />
             </Room>
         </div>
     );

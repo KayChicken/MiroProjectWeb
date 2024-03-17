@@ -6,14 +6,14 @@ import { api } from '../../../../../convex/_generated/api';
 import { Id } from '../../../../../convex/_generated/dataModel';
 
 interface InfoProps {
-    boardId: string;
+    boardid: string;
 }
 
 
-const Info = ({ boardId }: InfoProps) => {
+const Info = ({ boardid }: InfoProps) => {
 
     const data = useQuery(api.board.get, {
-        id: boardId as Id<"boards">
+        id: boardid as Id<"boards">
     })
 
     return (
