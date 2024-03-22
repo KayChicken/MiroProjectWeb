@@ -1,7 +1,7 @@
 import { Skeleton } from "@/components/ui/skeleton"
 import ToolButton from "./tool-button"
 import { Circle, CircleEllipsis, MousePointer2, Pen, Redo, Square, StickyNote, Text, Type, Undo } from "lucide-react"
-import { CanvasMode, CanvasState } from "@/lib/types";
+import { CanvasMode, CanvasState, LayerType } from "@/lib/types";
 
 
 type Props = {
@@ -25,8 +25,14 @@ export const Toolbar = ({ canvasState, setCanvasState, undo, redo, canUndo, canR
                     <ToolButton
                         label="Select"
                         icon={MousePointer2}
-                        onClick={() => { }}
-                        isActive={false}
+                        isActive={
+                            canvasState.mode === CanvasMode.None ||
+                            canvasState.mode === CanvasMode.Translating ||
+                            canvasState.mode === CanvasMode.SelectionNet ||
+                            canvasState.mode === CanvasMode.Pressing ||
+                            canvasState.mode === CanvasMode.Resizing
+                        }
+                        onClick={() => setCanvasState({ mode: CanvasMode.None })}
                     />
                 </div>
                 <div>
@@ -49,16 +55,32 @@ export const Toolbar = ({ canvasState, setCanvasState, undo, redo, canUndo, canR
                     <ToolButton
                         label="Rectangle"
                         icon={Square}
-                        onClick={() => { }}
-                        isActive={false}
+                        isActive={
+                            canvasState.mode === CanvasMode.Inserting &&
+                            canvasState.layerType === LayerType.Rectangle
+                        }
+                        onClick={() =>
+                            setCanvasState({
+                                mode: CanvasMode.Inserting,
+                                layerType: LayerType.Rectangle,
+                            })
+                        }
                     />
                 </div>
                 <div>
                     <ToolButton
                         label="Circle"
                         icon={Circle}
-                        onClick={() => { }}
-                        isActive={false}
+                        isActive={
+                            canvasState.mode === CanvasMode.Inserting &&
+                            canvasState.layerType === LayerType.Ellipse
+                        }
+                        onClick={() =>
+                            setCanvasState({
+                                mode: CanvasMode.Inserting,
+                                layerType: LayerType.Ellipse,
+                            })
+                        }
                     />
                 </div>
                 <div>
@@ -76,8 +98,8 @@ export const Toolbar = ({ canvasState, setCanvasState, undo, redo, canUndo, canR
                         label="Undo"
                         icon={Undo}
                         onClick={undo}
-                        isActive={false}
-                        
+                        isDisabled={!canUndo}
+
                     />
                 </div>
                 <div>
@@ -85,7 +107,8 @@ export const Toolbar = ({ canvasState, setCanvasState, undo, redo, canUndo, canR
                         label="Redo"
                         icon={Redo}
                         onClick={redo}
-                        
+                        isDisabled={!canRedo}
+
                     />
                 </div>
             </div>

@@ -3,7 +3,7 @@
 import Info from "./info"
 import { Participants } from "./participants"
 import { Toolbar } from "./toolbar"
-
+import styles from '../../../styles/canvas.module.css'
 import { useCanRedo, useCanUndo, useHistory, useMutation, useOthersMapped, useSelf, useStorage } from "../../../../../liveblocks.config"
 import { useApiMutation } from "../../../../../hooks/use-api-mutation"
 import { api } from "../../../../../convex/_generated/api"
@@ -16,6 +16,8 @@ import { nanoid } from "nanoid";
 import { LiveObject } from "@liveblocks/client"
 import LayerComponent from "./layerComponent"
 import Path from "./path"
+import SelectionTools from "./selectionTools"
+import SelectionBox from "./selectionBox"
 
 interface CanvasProps {
     boardid: string
@@ -426,18 +428,18 @@ export const Canvas = ({ boardid }: CanvasProps) => {
 
 
     return (
-        <main className="h-full w-full relative bg-neutral-100 touch-none">
+        <main className={styles.canvas}>
 
-            {/* <SelectionTools
-                    isAnimated={
-                        canvasState.mode !== CanvasMode.Translating &&
-                        canvasState.mode !== CanvasMode.Resizing
-                    }
-                    camera={camera}
-                    setLastUsedColor={setLastUsedColor}
-                /> */}
+            <SelectionTools
+                isAnimated={
+                    canvasState.mode !== CanvasMode.Translating &&
+                    canvasState.mode !== CanvasMode.Resizing
+                }
+                camera={camera}
+                setLastUsedColor={setLastUsedColor}
+            />
             <svg
-                className="h-full w-full"
+                className={styles.renderer_svg}
                 onWheel={onWheel}
                 onPointerDown={onPointerDown}
                 onPointerMove={onPointerMove}
@@ -459,14 +461,14 @@ export const Canvas = ({ boardid }: CanvasProps) => {
                         />
                     ))}
                     {/* Blue square that show the selection of the current users. Also contains the resize handles. */}
-                    {/* <SelectionBox
+                    <SelectionBox
                         onResizeHandlePointerDown={onResizeHandlePointerDown}
-                    /> */}
+                    />
                     {/* Selection net that appears when the user is selecting multiple layers at once */}
                     {canvasState.mode === CanvasMode.SelectionNet &&
                         canvasState.current != null && (
                             <rect
-                                // className={styles.selection_net}
+                                className={styles.selection_net}
                                 x={Math.min(canvasState.origin.x, canvasState.current.x)}
                                 y={Math.min(canvasState.origin.y, canvasState.current.y)}
                                 width={Math.abs(canvasState.origin.x - canvasState.current.x)}
@@ -496,9 +498,9 @@ export const Canvas = ({ boardid }: CanvasProps) => {
                 canUndo={canUndo}
                 canRedo={canRedo}
             />
-            {/* <Info boardid={boardid} />
+            <Info boardid={boardid} />
             <Participants />
-            <Toolbar /> */}
+
 
 
         </main>
