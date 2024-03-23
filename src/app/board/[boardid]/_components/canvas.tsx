@@ -52,7 +52,7 @@ export const Canvas = ({ boardid }: CanvasProps) => {
     useEffect(() => {
         function onKeyDown(e: KeyboardEvent) {
             switch (e.key) {
-                case "Backspace": {
+                case "Delete": {
                     deleteLayers();
                     break;
                 }
@@ -83,7 +83,8 @@ export const Canvas = ({ boardid }: CanvasProps) => {
         ({ self, setMyPresence }, e: React.PointerEvent, layerId: string) => {
             if (
                 canvasState.mode === CanvasMode.Pencil ||
-                canvasState.mode === CanvasMode.Inserting
+                canvasState.mode === CanvasMode.Inserting ||
+                canvasState.mode === CanvasMode.Text
             ) {
                 return;
             }
@@ -146,6 +147,47 @@ export const Canvas = ({ boardid }: CanvasProps) => {
         },
         [lastUsedColor]
     );
+
+
+
+
+    const insertText = useMutation(
+        (
+            { storage, setMyPresence },
+            layerType: LayerType.Text,
+            position: Point
+        ) => {
+            const liveLayers = storage.get("layers");
+            if (liveLayers.size >= 100) {
+                return;
+            }
+
+            const liveLayerIds = storage.get("layerIds");
+            const layerId = nanoid();
+            const layer = new LiveObject({
+                type: layerType,
+                x: position.x,
+                y: position.y,
+                height: 100,
+                width: 100,
+                fill: lastUsedColor,
+                value: "Text"
+            });
+            liveLayerIds.push(layerId);
+            liveLayers.set(layerId, layer);
+
+            setMyPresence({ selection: [layerId] }, { addToHistory: true });
+            setState({ mode: CanvasMode.None });
+        },
+        [lastUsedColor]
+    );
+
+
+
+
+
+
+
 
     /**
      * Transform the drawing of the current user in a layer and reset the presence to delete the draft.
@@ -344,7 +386,7 @@ export const Canvas = ({ boardid }: CanvasProps) => {
         (e: React.PointerEvent) => {
             const point = pointerEventToCanvasPoint(e, camera);
 
-            if (canvasState.mode === CanvasMode.Inserting) {
+            if (canvasState.mode === CanvasMode.Inserting || canvasState.mode === CanvasMode.Text) {
                 return;
             }
 
@@ -407,7 +449,10 @@ export const Canvas = ({ boardid }: CanvasProps) => {
                 insertPath();
             } else if (canvasState.mode === CanvasMode.Inserting) {
                 insertLayer(canvasState.layerType, point);
-            } else {
+            } else if (canvasState.mode === CanvasMode.Text) {
+                insertText(canvasState.layerType, point);
+            }
+            else {
                 setState({
                     mode: CanvasMode.None,
                 });

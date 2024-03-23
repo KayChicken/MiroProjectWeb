@@ -27,6 +27,7 @@ export default function Rectangle(
             fill={fill ? colorToCss(fill) : "#CCC"}
             strokeWidth={1}
             stroke={selectionColor || "transparent"}
+            
         />
     );
 }

@@ -4,8 +4,9 @@ import { useStorage } from "../../../../../liveblocks.config";
 import Rectangle from "./rectangle";
 import { colorToCss } from "@/lib/utils";
 import Ellipse from "./ellipse";
-import { CanvasMode, LayerType } from "@/lib/types";
 import Path from "./path";
+import Text from "./text";
+import { CanvasMode, LayerType } from "@/lib/types";
 
 type Props = {
     id: string;
@@ -13,6 +14,8 @@ type Props = {
     onLayerPointerDown: (e: React.PointerEvent, layerId: string) => void;
     selectionColor?: string;
 };
+
+
 
 const LayerComponent = memo(
     ({ mode, onLayerPointerDown, id, selectionColor }: Props) => {
@@ -54,6 +57,19 @@ const LayerComponent = memo(
                         selectionColor={selectionColor}
                     />
                 );
+
+
+            case LayerType.Text:
+                return (
+                    <Text
+                        id={id}
+                        layer={layer}
+                        onPointerDown={onLayerPointerDown}
+                        selectionColor={selectionColor}
+                    />
+                )
+
+
             default:
                 console.warn("Unknown layer type");
                 return null;

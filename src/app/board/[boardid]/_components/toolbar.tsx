@@ -39,8 +39,16 @@ export const Toolbar = ({ canvasState, setCanvasState, undo, redo, canUndo, canR
                     <ToolButton
                         label="Text"
                         icon={Type}
-                        onClick={() => { }}
-                        isActive={false}
+                        onClick={() =>
+                            setCanvasState({
+                                mode: CanvasMode.Text,
+                                layerType: LayerType.Text,
+                            })
+                        }
+                        isActive={
+                            canvasState.mode === CanvasMode.Text &&
+                            canvasState.layerType === LayerType.Text
+                        }
                     />
                 </div>
                 <div>
